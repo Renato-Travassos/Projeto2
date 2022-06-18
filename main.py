@@ -1,28 +1,39 @@
-from cardapio import pratos
-pagamento=pergunta=valor=dinheiro=cont=total=pedido2=final=0
+def pedidocomida():
+    c=input("digite comida:")
+    pedido2.append(c)
+
+pagamento=pergunta=valor=dinheiro=cont=total=final=comida=número=extra1=pedido1=0
+pedidos=[[0],[1]]
+cliente=list()
+pedido2=[]
 from random import randint
-while True:
- cliente=list()
- nome=str(input('\033[0m(digite "TOTAL" para os ganhos)\nnome do cliente:'))
- if nome=='TOTAL':
+while True:  
+ nome=input('\033[0m(digite "TOTAL" para os ganhos ou "L" para ver pedidos)\nnome do cliente:').upper()
+ if nome =='TOTAL':
     print(f'Total de pedidos feitos{cont}\ntotal de ganho{total}')
- pratos()
- pedido=int(input('\033[0mInsira  o valor do pedido'))
+ if nome == 'L':
+    for d,i in cliente:
+        print(f'Cliente{d} pedido{i}')
+ pedidocomida()
+ pedido=int(input('\033[0mInsira n o valor do pedido'))
  valor+=pedido
  número=randint(0,100)
- cliente.append([nome,[pedido,número]])
- print(f'o pedido da(o) cliente {nome} já está a caminho')
+ número='número:'+str(número)
  while True:
-  pergunta=str(input('Finalizar pedido?[S/N]')).upper()[0]
-  if pergunta=='S':
+  pergunta=str(input('Finalizar pedido?[S/N]'))
+  if pergunta in 'sS':
+     pedidos[1]=pedido2[:] 
+     pedidos[0]=(nome,número,pedido)
+     pedido2.clear()
      break
      print('pedido finalizado')
-  elif pergunta=='N':
-     pedido2=int(input('Insira o que pediram'))
-     pedido+=pedido2
- print(f'o pedido do cliente {nome}{número} deu {pedido}')
+  elif pergunta in 'nN':
+     pedidocomida()
+     pedido1=int(input('Insira o valor deste pedido '))
+     pedido+=pedido1
+ print(f'o pedido do cliente {nome} {número} deu {pedido}')
  while True:
-  pagamento=int(input('Dinheiro==0 ou cartão==1 cancela==3'))
+  pagamento=int(input('Dinheiro==0 ou cartão==1 cancela==2'))
   if pagamento==0:
     dinheiro=int(input('insira o valor'))
     if dinheiro>=pedido:
@@ -35,10 +46,11 @@ while True:
     else:
      print('\033[0;31mErro,dinheiro insuficiente')
   if pagamento==1:
-     print('pagamento feito')
+     cliente.append(pedidos.copy())
+     print(f'pagamento feito\no pedido da(o) cliente {nome} número {número} já está a caminho')
      total+=pedido
      cont+=1
      break
-  if pagamento==3:
+  if pagamento==2:
+     print('cancelado')
      break
-  print('indo ao próximo pedido...')
